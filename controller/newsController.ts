@@ -1,17 +1,12 @@
 import NewsService from "../services/newsService";
 import * as HttpStatus from "http-status";
 import httpStatus = require("http-status");
-
+import Helper from "../infra/Helper";
 class NewsController {
-
-    sendResponse = function (res, statuscode, data) {
-        res.status(statuscode).json({ result: data })
-    };
-
 
     get(req, res) {
         NewsService.get()
-            .then(news => this.sendResponse(res, HttpStatus.OK, news))
+            .then(news => Helper.sendResponse(res, HttpStatus.OK, news))
             .catch(error => console.error.bind(console, `Error ${error}`));
     }
 
@@ -19,7 +14,7 @@ class NewsController {
         const _id = req.params.id;
 
         NewsService.getById(_id)
-            .then(news => this.sendResponse(res, HttpStatus.OK, news))
+            .then(news => Helper.sendResponse(res, HttpStatus.OK, news))
             .catch(error => console.error.bind(console, `Error ${error}`));
 
     }
@@ -28,7 +23,7 @@ class NewsController {
         let news = req.body;
 
         NewsService.create(news)
-            .then(news => this.sendResponse(res, HttpStatus.OK, "Noticia cadastrada com sucesso!"))
+            .then(news => Helper.sendResponse(res, HttpStatus.OK, "Noticia cadastrada com sucesso!"))
             .catch(error => console.error.bind(console, `Error ${error}`));
     }
 
@@ -36,7 +31,7 @@ class NewsController {
         const _id = req.params.id;
         let news = req.body;
         NewsService.update(_id, news)
-            .then(news => this.sendResponse(res, HttpStatus.OK, `${news.title} foi atualizada com sucesso!`))
+            .then(news => Helper.sendResponse(res, HttpStatus.OK, `${news.title} foi atualizada com sucesso!`))
             .catch(error => console.error.bind(console, `Error ${error}`));
 
     }
@@ -44,7 +39,7 @@ class NewsController {
     delete(req, res) {
         const _id = req.params.id;
         NewsService.delete(_id)
-            .then(() => this.sendResponse(res, HttpStatus.OK, "Noticia deletada com sucesso!"))
+            .then(() => Helper.sendResponse(res, HttpStatus.OK, "Noticia deletada com sucesso!"))
             .catch(error => console.error.bind(console, `Error ${error}`));
     }
 
