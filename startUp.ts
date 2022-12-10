@@ -1,10 +1,11 @@
 import * as express from 'express'
 import Database from './infra/db';
-
+import * as bodyParser from "body-parser";
 
 class StartUp {
     public app: express.Application;
     private _db: Database;
+    private _bodyParser;
 
 
     constructor() {
@@ -12,14 +13,19 @@ class StartUp {
 
         this._db = new Database();
         this._db.createConnection();
-
+        this.middler()
         this.routes();
+    }
+
+    middler(){
+        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.urlencoded({extended: false}));
     }
 
 
     routes() {
         this.app.route('/').get((req, resp) => {
-            resp.send({ versao: '0.0.1' })
+            resp.send({ versao: '0.0.1' });
         })
     }
 }
